@@ -20,8 +20,7 @@ class Search extends StatelessWidget {
             ),
             TextField(
               onSubmitted: (value) async {
-                WeatherModel weatherModel =
-                    await WeatherApi().getWeather(cityName: value);
+                
                 Navigator.pop(context);
               },
               maxLines: 2,
