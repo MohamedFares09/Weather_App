@@ -13,10 +13,12 @@ class WeatherCubit extends Cubit<WeatherState> {
     try {
       WeatherModel weatherModel =
           await WeatherApi().getWeather(cityName: cityName);
-      emit(WeatherSuccessState());
+      emit(WeatherSuccessState(weatherModel));
     } catch (e) {
       // TODO
-      emit(WeatherFailuerState());
+      emit(WeatherFailuerState(
+      e.toString()
+      ));
     }
   }
 }

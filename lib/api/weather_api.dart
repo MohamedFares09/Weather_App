@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:weather_app/model/weather_model.dart';
 
@@ -7,17 +9,19 @@ class WeatherApi {
     Dio dio = Dio();
     try {
       final Response response = await dio.get(
-          '$baseURL/forecast.json?key=899e2e3cf2f944d38c8102317243007&q$cityName');
+          '$baseURL/forecast.json?key=899e2e3cf2f944d38c8102317243007&q=$cityName');
 
-      WeatherModel userModel = WeatherModel.fromJson(response.data);
-      return userModel;
+      WeatherModel weatherModel = WeatherModel.fromJson(response.data);
+      log(weatherModel.cityName);
+      return weatherModel;
     } on DioException catch (e) {
       // error model
-      final String errorMessage = e.response?.data['error']['message'] ??
-          "opps there was an error , try again";
+      final String errorMessage = e.response?.data?['error']?['message'] ??
+          "Oops there was an error, try again";
       throw Exception(errorMessage);
     } catch (e) {
-      throw Exception("opps there was an error , try again");
+      log(e.toString());
+      throw Exception("Oops there was an error, try again");
     }
   }
 }

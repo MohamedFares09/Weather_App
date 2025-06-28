@@ -10,7 +10,7 @@ class NoWeather extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          child: Text(""),
+          child: Text("No Weather Start Search"),
         ),
       ],
     );

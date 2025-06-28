@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/cubit/weather_cubit.dart';
+import 'package:weather_app/cubit/weather_state.dart';
 import 'package:weather_app/screen/search.dart';
+import 'package:weather_app/widget/no_weather.dart';
 import 'package:weather_app/widget/weather.dart';
 
 class Home extends StatelessWidget {
@@ -24,7 +28,21 @@ class Home extends StatelessWidget {
               icon: Icon(Icons.search))
         ],
       ),
-      body: Weather(),
+      body: BlocBuilder<WeatherCubit, WeatherState>(
+        builder: (context, state) {
+          if (state is WeatherLoadingState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is InitState) {
+            return NoWeather();
+          } else if (state is WeatherSuccessState) {
+            return Weather(weatherModel: state.weatherModel);
+          } else {
+            return Text("opps there was an error");
+          }
+        },
+      ),
     );
   }
 }

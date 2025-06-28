@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/model/weather_model.dart';
 
 class Weather extends StatelessWidget {
-  const Weather({super.key});
+  Weather({
+    super.key,
+    required this.weatherModel,
+  });
 
+  WeatherModel weatherModel;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -10,15 +15,15 @@ class Weather extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'Alexandria',
+          Text(
+            weatherModel.cityName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 32,
             ),
           ),
-          const Text(
-            'updated at 23:46',
+          Text(
+            weatherModel.lastUpdata,
             style: TextStyle(
               fontSize: 24,
             ),
@@ -31,16 +36,36 @@ class Weather extends StatelessWidget {
             children: [
               Flexible(
                 flex: 2,
-                child: Image.asset(
-                  'assets/images/cloudy.png',
-                  height: 80,
-                  width: 80,
+                child: Image.network(
+                  weatherModel.image,
+                  height: 40,
+                  width: 40,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Error loading image: $error');
+                    print('Image URL: ${weatherModel.image}');
+                    return Icon(
+                      Icons.cloud,
+                      size: 40,
+                      color: Colors.grey,
+                    );
+                  },
                 ),
               ),
               Flexible(
                 flex: 1,
                 child: Text(
-                  '17°',
+                  ' ${weatherModel.avgTemp}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
@@ -53,13 +78,13 @@ class Weather extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Maxtemp: 24°',
+                      'Maxtemp: ${weatherModel.maxTemp}',
                       style: TextStyle(
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      'Mintemp: 16°',
+                      'Mintemp: ${weatherModel.minTemp}',
                       style: TextStyle(
                         fontSize: 14,
                       ),
@@ -72,8 +97,8 @@ class Weather extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          const Text(
-            'Light Rain',
+          Text(
+            weatherModel.condition,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 28,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/cubit/weather_cubit.dart';
 import 'package:weather_app/model/weather_model.dart';
 
 class Search extends StatelessWidget {
@@ -20,11 +22,12 @@ class Search extends StatelessWidget {
             ),
             TextField(
               onSubmitted: (value) async {
-                
+                context.read<WeatherCubit>().getWeather(cityName: value); 
                 Navigator.pop(context);
               },
-              maxLines: 2,
+              maxLines: 1,
               decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(30),
                   hintText: "Search a city",
                   labelText: 'Search',
                   suffixIcon: Icon(Icons.search),
