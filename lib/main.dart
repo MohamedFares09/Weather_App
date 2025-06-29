@@ -15,8 +15,11 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => WeatherCubit(),
       child: MaterialApp(
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(backgroundColor: Colors.amber),
+        ),
         debugShowCheckedModeBanner: false,
-        home: Home(),
+        home: const Home(),
       ),
     );
   }

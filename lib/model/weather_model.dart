@@ -1,6 +1,6 @@
 class WeatherModel {
   final String cityName;
-  final String lastUpdata;
+  final DateTime lastUpdata;
   final String image;
   final double avgTemp;
   final double maxTemp;
@@ -23,7 +23,7 @@ class WeatherModel {
 
     return WeatherModel(
       cityName: json['location']['name'] ?? 'cario',
-      lastUpdata: json['location']['localtime'],
+      lastUpdata: DateTime.parse( json['location']['localtime']),
       image: imageUrl,
       avgTemp: json['forecast']['forecastday'][0]['day']['avgtemp_c'],
       maxTemp: json['forecast']['forecastday'][0]['day']['maxtemp_c'],
